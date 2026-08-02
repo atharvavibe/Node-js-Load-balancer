@@ -10,6 +10,11 @@ app.get("/",(req,res) =>{
     //console.log(req.query.id);
 })
 
+app.get("/health", (req, res) => {
+    res.status(200).json({
+        status: "healthy"
+    });
+});
 
 app.listen(3001,() => {
     console.log("Server 1 running on port 3001");

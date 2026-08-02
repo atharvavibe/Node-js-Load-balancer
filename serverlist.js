@@ -14,7 +14,7 @@ const servers = [
         weight: 3
     },
     {
-        id: 2,
+        id: 3,
         url: "http://localhost:3003/",
         healthy: true,
         activeconnections: 0,

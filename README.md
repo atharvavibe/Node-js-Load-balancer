@@ -19,8 +19,9 @@ A load balancer built from scratch using Node.js and Express to understand distr
 
 - [x] Reverse Proxy
 - [x] Round Robin
-- [ ] Passive Health Checks
-- [ ] Active Health Checks
+- [x] Passive Health Checks
+- [x] Active Health Checks
+- [x] Production logging
 - [ ] Least Connections
 - [ ] Weighted Round Robin
 - [ ] Sticky Sessions

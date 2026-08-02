@@ -9,6 +9,12 @@ app.get("/",(req,res) =>{
     });
 });
 
+app.get("/health", (req, res) => {
+    res.status(200).json({
+        status: "healthy"
+    });
+});
+
 app.listen(3002,()=>{
     console.log("Server 2 is running");
 })

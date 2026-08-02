@@ -2,10 +2,12 @@ const express = require("express");
 const axios = require("axios");
 
 const servers = require("./serverlist");
+const healthChecker = require("./healthchecker");
 
 const app = express();
 
 let currentServer= 0;
+
 
 app.get("/", async(req,res) => {
     try{
