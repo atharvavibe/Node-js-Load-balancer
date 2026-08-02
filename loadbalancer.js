@@ -9,15 +9,37 @@ let currentServer= 0;
 
 app.get("/", async(req,res) => {
     try{
-        const response = await axios.get(servers[currentServer].url);
-        currentServer = (currentServer+1) % servers.length; //Round Robin Algorithm implemented for request handling
-        console.log(response.data);
-        res.json(response.data);
+            let attempts = 0;
+            while(attempts<servers.length){
+                if(!servers[currentServer].healthy){
+                    currentServer = (currentServer+1) % servers.length;
+                    attempts++;
+                    continue;
+                }
+            
+                try {
+                    const response = await axios.get(servers[currentServer].url);
+                    if(response.status == 200){
+                        currentServer = (currentServer+1) % servers.length;
+                        return res.json(response.data);
+                    }
+                } catch (error) {
+                    servers[currentServer].healthy = false;
+                    currentServer = (currentServer+1) % servers.length;
+                    attempts++; 
+                    console.error(
+                        `Server ${servers[currentServer].id} is down: ${error.message}`
+                    );
+                }
+            }
+        
     }
     catch(exception){
-        console.error(`Failed to connect to ${servers[currentServer].url}`);
+        //console.error(`Failed to connect to ${servers[currentServer].url}`);
+        //console.log(servers[currentServer].healthy);
+        //servers[currentServer].healthy = false;
         res.status(500).json({
-            message: "Backend server not available"
+            message: "No healthy servers available"
         })
     }
 })
