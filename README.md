@@ -26,4 +26,3 @@ A load balancer built from scratch using Node.js and Express to understand distr
 - [ ] Sticky Sessions
 - [ ] Metrics
 - [ ] Docker
-- [ ] AWS Deployment
