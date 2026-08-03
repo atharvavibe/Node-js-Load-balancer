@@ -5,6 +5,7 @@ const servers = require("./serverlist");
 const healthChecker = require("./healthchecker");
 const roundRobin = require("./algorithms/roundrobin");
 const getNextHealthyServer = require("./algorithms/roundrobin");
+const getLeastConnectionsServer = require("./algorithms/leastconnections");
 
 const app = express();
 
@@ -12,23 +13,58 @@ const app = express();
 
 
 app.get("/", async(req,res) => {
-    //Implementation of Round
+    //Round Robin
+    // let attempts = 0;
+    // while(attempts < servers.length){
+    //      let server = getNextHealthyServer(servers);
+
+    //  if(server == null){
+    //             return res.status(503).json({
+    //                 message: "No healthy server available"
+    //             })
+    //         }
+    // try {
+    //     const response = await axios.get(server.url);
+    //     return res.json(response.data);
+    // } catch (error) {
+    //     server.healthy = false;
+    //     attempts++;
+    // }
+    // }
+
+    //Least Connections
     let attempts = 0;
     while(attempts < servers.length){
-         let server = getNextHealthyServer(servers);
+        let server = getLeastConnectionsServer(servers);
+        
+        if(server == null){
+            return res.status(503).json({
+                message : "No healthy server available"
+            })
+        }
 
-     if(server == null){
-                return res.status(503).json({
-                    message: "No healthy server available"
-                })
+        server.activeconnections++;
+        console.log(
+            `Increment -> Server ${server.id}: ${server.activeconnections}`
+        );
+
+        try {
+            const response = await axios.get(server.url);
+            return res.json(response.data);
+        } catch (error) {
+            server.healthy = false;
+            attempts++;
+            
+        }
+        finally{
+            if(server != null){
+                server.activeconnections--;
+                console.log(
+                    `Decrement -> Server ${server.id}: ${server.activeconnections}`
+                );
             }
-    try {
-        const response = await axios.get(server.url);
-        return res.json(response.data);
-    } catch (error) {
-        server.healthy = false;
-        attempts++;
-    }
+            
+        }
     }
 
 });

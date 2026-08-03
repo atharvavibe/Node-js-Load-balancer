@@ -22,7 +22,7 @@ A load balancer built from scratch using Node.js and Express to understand distr
 - [x] Passive Health Checks
 - [x] Active Health Checks
 - [x] Production logging
-- [ ] Least Connections
+- [x] Least Connections
 - [ ] Weighted Round Robin
 - [ ] Sticky Sessions
 - [ ] Metrics

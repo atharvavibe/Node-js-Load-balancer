@@ -2,7 +2,12 @@ const express = require("express");
 
 const app = express();
 
-app.get("/",(req,res) =>{
+app.get("/",async (req,res) =>{
+    //for leastconnections algorithm testing purpose start
+    console.log("Server 1 START");
+    await new Promise(resolve => setTimeout(resolve, 100000));
+    console.log("Server 1 END");//for leastconnections algorithm testing purpose end
+
     res.json({
         server: "Server 1",
         message:"Hello from server 1"

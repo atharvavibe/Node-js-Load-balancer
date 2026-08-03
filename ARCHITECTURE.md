@@ -13,6 +13,7 @@ Current Features
 - Passive Health Checks
 - Active Health Checks
 - Winston Logging
+- Least Connections Load Balancing 
 
 ---
 
@@ -25,7 +26,11 @@ loadbalancer/
 ├── healthchecker.js
 ├── logger.js
 ├── logs/
-└── README.md
+├──README.md
+└── algorithms/
+      │
+      ├── roundrobin.js
+      └── leastconnections.js
 
 ---
 
@@ -292,23 +297,82 @@ Example
 Server 2 recovered
 
 ---
+## Least Connections
+
+Problem
+
+Avoid overload of requests on server due to Round Robin
+
+Algorithm
+
+Incoming request
+
+↓
+
+returns server with least active connections
+
+↓
+
+activeconnections++ after server selection
+
+↓
+
+after request completion activeconnections--
+
+Time Complexity  
+
+O(N)
+
+---
+
+# Previous Architecture
+
+                     Client
+                        │
+                        ▼
+               loadbalancer.js
+                        │
+        ┌───────────────┴───────────────┐
+        │                               │
+        ▼                               ▼
+ roundrobin.js                  healthchecker.js
+        │                               │
+        │                               ▼
+        └───────────────┬───────────────┘
+                        ▼
+                  serverlist.js
+                        │
+                        ▼
+                     logger.js
+                        │
+                        ▼
+                 Backend Servers
 
 # Current Architecture
 
-                Client
-                   │
-                   ▼
-          nodeBalancer.js
-                   │
-                   ▼
-            serverList.js
-           ▲             ▲
-           │             │
-           │             │
-healthChecker.js     logger.js
-           │
-           ▼
-     Backend Servers
+                    Client
+                       │
+                       ▼
+               loadBalancer.js
+                       │
+         ┌─────────────┴──────────────┐
+         │                            │
+         ▼                            ▼
+ roundRobin.js              leastConnections.js
+         │                            │
+         └─────────────┬──────────────┘
+                       ▼
+                  serverList.js
+                       ▲
+                       │
+              healthChecker.js
+                       │
+                       ▼
+                   logger.js
+                       │
+                       ▼
+                Backend Servers
+
 
 ---
 
