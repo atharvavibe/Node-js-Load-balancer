@@ -210,7 +210,7 @@ currentServer %= servers.length
 
 Time Complexity
 
-O(1)
+O(n)
 
 Advantages
 
