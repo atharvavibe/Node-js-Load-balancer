@@ -20,9 +20,9 @@ Current Features
 
 loadbalancer/
 │
-├── nodeBalancer.js
-├── serverList.js
-├── healthChecker.js
+├── loadbalancer.js
+├── serverlist.js
+├── healthchecker.js
 ├── logger.js
 ├── logs/
 └── README.md
@@ -31,7 +31,7 @@ loadbalancer/
 
 # File Responsibilities
 
-## nodeBalancer.js
+## loadbalancer.js
 
 Purpose
 
@@ -50,7 +50,7 @@ Health monitoring is delegated to healthChecker.js.
 
 ---
 
-## serverList.js
+## serverlist.js
 
 Purpose
 
@@ -89,7 +89,7 @@ Every module imports this same object.
 
 ---
 
-## healthChecker.js
+## healthchecker.js
 
 Purpose
 
